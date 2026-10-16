@@ -36,19 +36,31 @@ function fittedSize(text,base,min,maxWidth,fontWeight="700",family="Arial"){
  while(ctx.measureText(text).width>maxWidth&&size>min){size-=1;ctx.font=`${fontWeight} ${size}px ${family}`}
  return size;
 }
-function drawPersonalization(name,designation){
- // White cover masks the sample Placeholder/designation labels in the bottom area.
- // Keep within the bottom label area, above/between the decorative separators.
- ctx.save();
- ctx.fillStyle="#ffffff";
- ctx.fillRect(W*.18,H*.695,W*.64,H*.105);
- ctx.textAlign="center";ctx.textBaseline="middle";
- const nameSize=fittedSize(name,56,27,W*.78,"700","Arial");
- ctx.font=`700 ${nameSize}px Arial, Helvetica, sans-serif`;ctx.fillStyle="#3b3b3b";
- ctx.fillText(name,W*.5,H*.725,W*.78);
- const desSize=fittedSize(designation,31,20,W*.78,"400","Arial");
- ctx.font=`400 ${desSize}px Arial, Helvetica, sans-serif`;ctx.fillText(designation,W*.5,H*.755,W*.78);
- ctx.restore();
+function drawPersonalization(name, designation) {
+  ctx.save();
+
+  // Clear the incorrectly positioned text
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, H * 0.692, W, H * 0.100);
+
+  // Clear the original Placeholder and designation text
+  // without covering the decorative separators
+  ctx.fillRect(0, H * 0.810, W, H * 0.072);
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Name: move down into the bottom section
+  const nameSize = fittedSize(name, 56, 27, W * 0.78, "700", "Arial");
+  ctx.font = `700 ${nameSize}px Arial, Helvetica, sans-serif`;
+  ctx.fillStyle = "#3b3b3b";
+  ctx.fillText(name, W * 0.5, H * 0.836, W * 0.78);
+
+  // Designation: directly below the name
+  const desSize = fittedSize(designation, 31, 20, W * 0.78, "400", "Arial");
+  ctx.font = `400 ${desSize}px Arial, Helvetica, sans-serif`;
+  ctx.fillText(designation, W * 0.5, H * 0.863, W * 0.78)
+  ctx.restore();
 }
 function render(){
  if(!templateReady){showError("Poster template is missing. Add poster-template.png beside index.html and refresh.");return}
